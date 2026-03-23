@@ -1,63 +1,82 @@
 # 🚀 Expo & EAS Build Automator
 
-A robust Bash script to streamline your **Expo** and **EAS Build** workflow. Forget about typing long commands or forgetting flags—this script handles dependency installation, git synchronization, prebuilding, and deployment in one interactive flow.
+A professional suite of scripts to streamline your **Expo** and **EAS Build** workflow. Forget about complex flags or manual cleanup—these scripts handle dependency installation, git synchronization, prebuilding, and deployment in one interactive flow.
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
+* **Multi-Platform Support:** Includes native scripts for **macOS/Linux** (Bash) and **Windows** (PowerShell).
 * **Interactive Menus:** Easy selection of platforms (`iOS`, `Android`, `All`) and profiles (`Development`, `Preview`, `Production`).
-* **Smart Build Routing:** Choose between **Local** builds (to save cloud credits!) or **EAS Cloud**.
-* **Fail-Safe Execution:** Uses `set -e` to stop immediately if any step (like `npm install`) fails.
+* **Smart Build Routing:** Toggle between **Local** builds (save cloud credits!) or **EAS Cloud**.
+* **Fail-Safe Execution:** Scripts stop immediately if a critical step (like `npm install`) fails.
 * **Git Sync:** Automatically pulls the latest code and offers to clear local conflicts if needed.
 * **Production Ready:** Automatically triggers `--auto-submit` when the production profile is selected.
-* **Clean Prebuild:** Runs `expo prebuild --clean` to ensure no stale native artifacts interfere with your build.
+* **Clean Prebuild:** Runs `expo prebuild --clean` to ensure a fresh native environment.
+
+---
 
 ## 📋 Prerequisites
 
-Before running the script, ensure you have the following installed:
+Before running the scripts, ensure you have:
 
 * [Node.js & NPM](https://nodejs.org/)
 * [Git](https://git-scm.com/)
 * [EAS CLI](https://docs.expo.dev/build/setup/): `npm install -g eas-cli`
-* An existing Expo project with a valid `eas.json` configuration.
+* An existing Expo project with a valid `eas.json`.
 
-## 🚀 Quick Start
+---
 
-1.  **Create the script file** in your project's root directory:
-    ```bash
-    touch expo-build.sh
-    ```
+## 🚀 Setup & Usage
 
-2.  **Paste the script code** into the file and save it.
+### For macOS and Linux (Bash)
 
+1.  **Create the file**: `expo-build.sh` in your project root.
+2.  **Paste the Bash code** into the file.
 3.  **Make it executable**:
     ```bash
     chmod +x expo-build.sh
     ```
-
 4.  **Run it**:
     ```bash
     ./expo-build.sh
     ```
 
-## 🛠 Workflow Logic
+### For Windows (PowerShell)
 
-The script automates the following steps to ensure a reliable build:
-
-| Step | Behavior |
-| :--- | :--- |
-| **Git Pull** | Attempts a pull. If conflicts exist, it asks to `git checkout .` to sync. |
-| **Dependencies** | Runs `npm install` to ensure your packages are up to date. |
-| **Prebuild** | Cleans native folders (`/ios`, `/android`) before building to avoid caching issues. |
-| **Auto-Submit** | Automatically activated **only** when selecting the `production` profile. |
-| **Local Builds** | Adds the `--local` flag if you choose to build on your machine. |
-
-## ⚠️ Important Notes
-
-* **Local iOS Builds:** If you choose a local build for iOS, you must be running the script on a **macOS** machine with **Xcode** properly configured.
-* **EAS Login:** Ensure you have logged in to your Expo account via terminal using `eas login` before running the script for cloud builds.
+1.  **Create the file**: `expo-build.ps1` in your project root.
+2.  **Paste the PowerShell code** into the file.
+3.  **Set Execution Policy** (if you haven't already):
+    Open PowerShell as Administrator and run:
+    ```powershell
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    ```
+4.  **Run it**:
+    ```powershell
+    ./expo-build.ps1
+    ```
 
 ---
 
-**Tip:** You can add this script to your `.gitignore` if you don't want to track it, or keep it in the repo so your whole team can use the same standardized build process!
+## 🛠 Workflow Logic
+
+| Step | Behavior |
+| :--- | :--- |
+| **Dependency Check** | Verifies if `git`, `npm`, and `eas` are installed. |
+| **Git Pull** | Syncs with remote. If conflicts exist, it asks to `git checkout .` to proceed. |
+| **Dependencies** | Runs `npm install` to keep packages up to date. |
+| **Prebuild** | Cleans native folders (`/ios`, `/android`) to avoid cache issues. |
+| **iOS Validation** | **(Windows Only)** Prevents local iOS builds as they require Xcode/macOS. |
+| **Auto-Submit** | Enabled automatically **only** for the `production` profile. |
+
+---
+
+## ⚠️ Important Notes
+
+* **Local iOS Builds:** Require a **macOS** machine with **Xcode** installed.
+* **EAS Login:** Ensure you are logged in (`eas login`) before starting cloud builds.
+* **Local Android Builds:** Require **Android Studio** and `ANDROID_HOME` env variables configured.
+
+---
+
+**Tip:** Add these scripts to your `.gitignore` if you prefer, or commit them to your repository to standardize the build process for your entire team!
